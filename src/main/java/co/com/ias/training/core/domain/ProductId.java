@@ -1,4 +1,4 @@
-package co.com.ias.training.domain;
+package co.com.ias.training.core.domain;
 
 import org.apache.commons.lang3.Validate;
 

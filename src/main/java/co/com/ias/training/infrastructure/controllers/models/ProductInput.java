@@ -1,4 +1,4 @@
-package co.com.ias.training.controllers.models;
+package co.com.ias.training.infrastructure.controllers.models;
 
 public class ProductInput {
     private String name;

@@ -1,6 +1,6 @@
-package co.com.ias.training.controllers.models;
+package co.com.ias.training.infrastructure.controllers.models;
 
-import co.com.ias.training.domain.Product;
+import co.com.ias.training.core.domain.Product;
 
 public class ProductDTO {
     private String id;

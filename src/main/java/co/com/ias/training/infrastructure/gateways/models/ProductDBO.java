@@ -1,9 +1,9 @@
-package co.com.ias.training.repositories.models;
+package co.com.ias.training.infrastructure.gateways.models;
 
-import co.com.ias.training.domain.Product;
-import co.com.ias.training.domain.ProductDescription;
-import co.com.ias.training.domain.ProductId;
-import co.com.ias.training.domain.ProductName;
+import co.com.ias.training.core.domain.Product;
+import co.com.ias.training.core.domain.ProductDescription;
+import co.com.ias.training.core.domain.ProductId;
+import co.com.ias.training.core.domain.ProductName;
 
 public class ProductDBO {
     private String id;
