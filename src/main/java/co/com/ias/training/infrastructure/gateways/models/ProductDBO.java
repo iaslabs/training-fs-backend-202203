@@ -5,6 +5,9 @@ import co.com.ias.training.core.domain.ProductDescription;
 import co.com.ias.training.core.domain.ProductId;
 import co.com.ias.training.core.domain.ProductName;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class ProductDBO {
     private String id;
     private String name;
@@ -34,6 +37,14 @@ public class ProductDBO {
                 product.getName().toString(),
                 product.getDescription().toString()
         );
+    }
+
+    public static ProductDBO fromResultSet(ResultSet resultSet) throws SQLException {
+        ProductDBO dbo = new ProductDBO();
+        dbo.setId(resultSet.getString("product_id"));
+        dbo.setName(resultSet.getString("product_name"));
+        dbo.setDescription(resultSet.getString("product_description"));
+        return dbo;
     }
 
 

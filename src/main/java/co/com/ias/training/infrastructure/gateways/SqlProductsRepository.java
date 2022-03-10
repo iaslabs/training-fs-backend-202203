@@ -31,19 +31,16 @@ public class SqlProductsRepository implements ProductsRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, pageQuery.getLimit().getValue());
-            preparedStatement.setInt(2, pageQuery.getSkip().getValue());
+            preparedStatement.setInt(2, pageQuery.getSkip().toInteger());
 
 
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Product> result = new ArrayList<>();
 
             while (resultSet.next()) {
-                ProductDBO dbo = new ProductDBO();
-                dbo.setId(resultSet.getString("product_id"));
-                dbo.setName(resultSet.getString("product_name"));
-                dbo.setDescription(resultSet.getString("product_description"));
-                Product domainProduct = dbo.toDomain();
-                result.add(domainProduct);
+                ProductDBO productDBO = ProductDBO.fromResultSet(resultSet);
+                Product product = productDBO.toDomain();
+                result.add(product);
             }
 
             resultSet.close();
@@ -56,11 +53,39 @@ public class SqlProductsRepository implements ProductsRepository {
 
     @Override
     public Optional<Product> get(ProductId productId) {
-        return Optional.empty();
+        String sql = "SELECT * FROM products WHERE product_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, productId.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                ProductDBO dbo = ProductDBO.fromResultSet(resultSet);
+                Product domainProduct = dbo.toDomain();
+                return Optional.of(domainProduct);
+            } else {
+                return Optional.empty();
+            }
+
+        } catch (SQLException exception) {
+            throw new RuntimeException("Error querying database", exception);
+        }
     }
 
     @Override
     public void store(Product product) {
+        String sql = "INSERT INTO products (product_id, product_name, product_description) VALUES (?, ?, ?)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
+            preparedStatement.setString(1, product.getId().toString());
+            preparedStatement.setString(2, product.getName().toString());
+            preparedStatement.setString(3, product.getDescription().toString());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new RuntimeException("Error querying database", exception);
+        }
     }
 }

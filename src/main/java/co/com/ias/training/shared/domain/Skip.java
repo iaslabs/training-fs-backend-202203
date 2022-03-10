@@ -11,7 +11,7 @@ public class Skip {
         this.value = value;
     }
 
-    public Integer getValue() {
+    public Integer toInteger() {
         return value;
     }
 
