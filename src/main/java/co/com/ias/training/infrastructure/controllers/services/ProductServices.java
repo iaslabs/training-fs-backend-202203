@@ -1,4 +1,4 @@
-package co.com.ias.training.infrastructure.services;
+package co.com.ias.training.infrastructure.controllers.services;
 
 import co.com.ias.training.core.domain.Product;
 import co.com.ias.training.core.domain.ProductDescription;
@@ -29,18 +29,14 @@ public class ProductServices {
             ProductInput productInput
     ) {
         String value = UUID.randomUUID().toString();
-        try {
-            Product product = new Product(
-                    new ProductId(value),
-                    new ProductName(productInput.getName()),
-                    new ProductDescription(productInput.getDescription())
-            );
-            repository.store(product);
+        Product product = new Product(
+                ProductId.unsafeCreate(value),
+                new ProductName(productInput.getName()),
+                new ProductDescription(productInput.getDescription())
+        );
+        repository.store(product);
 
-            return ProductDTO.fromDomain(product);
-        } catch (NullPointerException | IllegalArgumentException e) {
-           throw new IllegalArgumentException("Error validating product data", e);
-        }
+        return ProductDTO.fromDomain(product);
     }
 
 

@@ -11,6 +11,10 @@ public class ProductId {
         this.value = value;
     }
 
+    public static ProductId unsafeCreate(String unsafeValue) {
+        return new ProductId(unsafeValue);
+    }
+
 
     public String getValue() {
         return value;
